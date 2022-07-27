@@ -14,7 +14,7 @@ function readExampleCSV(callback) {
       });
 }
 
-function getCharacteristicReviewsDataFromCSV(callback) {
+function characteristicReviewsDataFromCSV(callback) {
   let characteristicReviewsData = [];
   fs.createReadStream(path.join(__dirname, 'data/characteristic_reviews.csv'))
       .pipe(csv.parse({ headers: true }))
@@ -27,7 +27,7 @@ function getCharacteristicReviewsDataFromCSV(callback) {
 
 }
 
-function getCharacteristicDataFromCSV(callback) {
+function characteristicDataFromCSV(callback) {
   let characteristicsData = [];
   fs.createReadStream(path.join(__dirname, 'data/characteristics.csv'))
       .pipe(csv.parse({ headers: true }))
@@ -39,7 +39,7 @@ function getCharacteristicDataFromCSV(callback) {
       });
 }
 
-function getReviewsPhotosDataFromCSV(callback) {
+function reviewsPhotosDataFromCSV(callback) {
   let reviewsPhotosData = [];
   fs.createReadStream(path.join(__dirname, 'data/reviews_photos.csv'))
       .pipe(csv.parse({ headers: true }))
@@ -51,7 +51,7 @@ function getReviewsPhotosDataFromCSV(callback) {
       });
 }
 
-function getReviewsDataFromCSV(callback) {
+function reviewsDataFromCSV(callback) {
   let reviewsData = [];
   fs.createReadStream(path.join(__dirname, 'data/reviews.csv'))
       .pipe(csv.parse({ headers: true }))
@@ -63,15 +63,10 @@ function getReviewsDataFromCSV(callback) {
       });
 }
 
-// const callback = function(exampleData) {
-//   console.log(JSON.stringify(exampleData))
-// }
-// readExampleCSV(callback);
-
 module.exports = {
-  getReviewsDataFromCSV,
-  getReviewsPhotosDataFromCSV,
-  getCharacteristicDataFromCSV,
-  getCharacteristicReviewsDataFromCSV,
+  reviewsDataFromCSV,
+  reviewsPhotosDataFromCSV,
+  characteristicDataFromCSV,
+  characteristicReviewsDataFromCSV,
   readExampleCSV
 };
