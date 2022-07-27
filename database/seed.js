@@ -8,7 +8,7 @@ const seed = function (exampleData) {
   // }
 }
 
-const insertIntoDb = function (entry, databaseName) {
+const insertIntoDb = function (entry, tableName) {
   const keys = Object.keys(entry);
   const columns = getColumns(keys);
 
