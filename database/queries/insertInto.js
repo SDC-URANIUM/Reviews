@@ -10,7 +10,7 @@ const example = async function(columns, values) {
   })
 }
 
-const reviewsInfoTable = async function(columns, values) {
+const reviewsInfo = async function(columns, values) {
   const insertionQuery = "INSERT INTO reviewsinfo \
     " + columns + " VALUES " + values;
 
@@ -20,7 +20,7 @@ const reviewsInfoTable = async function(columns, values) {
   })
 }
 
-const metaTable = async function(columns, values) {
+const meta = async function(columns, values) {
   const insertionQuery = "INSERT INTO meta \
     " + columns + " VALUES " + values;
 
@@ -30,7 +30,7 @@ const metaTable = async function(columns, values) {
   })
 }
 
-const reviewTable = async function(columns, values) {
+const review = async function(columns, values) {
   const insertionQuery = "INSERT INTO review \
     " + columns + " VALUES " + values;
 
@@ -40,7 +40,7 @@ const reviewTable = async function(columns, values) {
   })
 }
 
-const photosTable = async function(columns, values) {
+const photos = async function(columns, values) {
   const insertionQuery = "INSERT INTO photos \
     " + columns + " VALUES " + values;
 
@@ -50,7 +50,7 @@ const photosTable = async function(columns, values) {
   })
 }
 
-const ratingsTable = async function(columns, values) {
+const ratings = async function(columns, values) {
   const insertionQuery = "INSERT INTO ratings \
     " + columns + " VALUES " + values;
 
@@ -60,7 +60,7 @@ const ratingsTable = async function(columns, values) {
   })
 }
 
-const recommendationsTable = async function(columns, values) {
+const recommendations = async function(columns, values) {
   const insertionQuery = "INSERT INTO recommendations \
     " + columns + " VALUES " + values;
 
@@ -70,7 +70,7 @@ const recommendationsTable = async function(columns, values) {
   })
 }
 
-const characteristicsTable = async function(columns, values) {
+const characteristics = async function(columns, values) {
   const insertionQuery = "INSERT INTO characteristics \
     " + columns + " VALUES " + values;
 
@@ -83,11 +83,11 @@ const characteristicsTable = async function(columns, values) {
 
 module.exports = {
   example,
-  reviewsInfoTable,
-  metaTable,
-  reviewTable,
-  photosTable,
-  ratingsTable,
-  recommendationsTable,
-  characteristicsTable,
+  reviewsInfo,
+  meta,
+  review,
+  photos,
+  ratings,
+  recommendations,
+  characteristics,
 }

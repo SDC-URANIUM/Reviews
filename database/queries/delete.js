@@ -1,7 +1,7 @@
 const pool = require('../db.js');
 
 const example = async function() {
-  const deletionQuery = "DROP TABLE example";
+  const deletionQuery = "DROP TABLE IF EXISTS example";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -73,6 +73,7 @@ const characteristicsTable = async function() {
 }
 
 const allTables = async function() {
+  await example();
   await reviewsInfoTable();
   await metaTable();
   await reviewTable();
@@ -94,5 +95,6 @@ module.exports = {
   allTables
 }
 
-// allTables();
-example();
+allTables();
+// example();
+// characteristicsTable();

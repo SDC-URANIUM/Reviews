@@ -2,39 +2,63 @@ const pool = require('../db.js');
 
 const example = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS example (\
-    name VARCHAR(255) NOT NULL,\
-    years VARCHAR(255) NOT NULL,\
-    language VARCHAR(255) NOT NULL\
+    name TEXT NOT NULL,\
+    years TEXT NOT NULL,\
+    language TEXT NOT NULL\
     )";
+
+  const changeOwnerQuery = "ALTER TABLE example OWNER TO root";
 
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
 const reviewsInfoTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS reviewsinfo (\
-    Product VARCHAR(255) NOT NULL PRIMARY KEY,\
+    Product TEXT NOT NULL PRIMARY KEY,\
     page int NOT NULL,\
     count int NOT NULL\
     )";
 
+  const changeOwnerQuery = "ALTER TABLE reviewsinfo OWNER TO root";
+
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
 const photosTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS photos (\
-    id SERIAL PRIMARY KEY,\
-    url VARCHAR(255) NOT NULL\
+    id int NOT NULL PRIMARY KEY,\
+    url TEXT\
     )";
+
+  const changeOwnerQuery = "ALTER TABLE photos OWNER TO root";
 
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
@@ -42,19 +66,27 @@ const reviewTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS review (\
     review_id int NOT NULL PRIMARY KEY,\
     rating int NOT NULL,\
-    summary VARCHAR(255) NOT NULL,\
+    summary TEXT NOT NULL,\
     recommend boolean NOT NULL,\
-    response VARCHAR(255) NOT NULL,\
-    body VARCHAR(255) NOT NULL,\
-    date VARCHAR(255) NOT NULL,\
-    reviewer_name VARCHAR(255) NOT NULL,\
+    response TEXT NOT NULL,\
+    body TEXT NOT NULL,\
+    date TEXT NOT NULL,\
+    reviewer_name TEXT NOT NULL,\
     helpfulness int NOT NULL,\
     photo_id int NOT NULL REFERENCES photos(id)\
     )";
 
+  const changeOwnerQuery = "ALTER TABLE review OWNER TO root";
+
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
@@ -68,9 +100,17 @@ const ratingsTable = async function() {
     fivestar int NOT NULL\
     )";
 
+  const changeOwnerQuery = "ALTER TABLE ratings OWNER TO root";
+
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
@@ -81,9 +121,17 @@ const recommendationsTable = async function() {
     notrecommended int NOT NULL\
     )";
 
+  const changeOwnerQuery = "ALTER TABLE recommendations OWNER TO root";
+
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
@@ -91,29 +139,46 @@ const characteristicsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS characteristics (\
     id int NOT NULL PRIMARY KEY,\
     product_id int NOT NULL,\
-    name VARCHAR(255) NOT NULL\
+    name TEXT NOT NULL\
     )";
 
-  pool.query(creationQuery, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
-  })
+    const changeOwnerQuery = "ALTER TABLE characteristics OWNER TO root";
+
+    pool.query(creationQuery, (error, result) => {
+      if (error) console.log(error);
+      else {
+        console.log(result);
+        pool.query(changeOwnerQuery, (error, result) => {
+          if (error) console.log(error);
+          else console.log(result);
+        })
+      }
+    })
 }
 
 const metaTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS meta (\
-    product_id VARCHAR(255) NOT NULL PRIMARY KEY,\
+    product_id TEXT NOT NULL PRIMARY KEY,\
     ratings_id int NOT NULL REFERENCES ratings(id),\
     characteristics_id int NOT NULL REFERENCES characteristics(id)\
     )";
 
+  const changeOwnerQuery = "ALTER TABLE meta OWNER TO root";
+
   pool.query(creationQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
+    else {
+      console.log(result);
+      pool.query(changeOwnerQuery, (error, result) => {
+        if (error) console.log(error);
+        else console.log(result);
+      })
+    }
   })
 }
 
 const allTables = async function() {
+  await example();
   await reviewsInfoTable();
   await photosTable();
   await reviewTable();
@@ -135,5 +200,6 @@ module.exports = {
   allTables
 }
 
-// allTables();
-example();
+allTables();
+// recommendationsTable();
+// example();
