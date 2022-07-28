@@ -1,8 +1,8 @@
 const create = require('./create.js');
-const delete = require('./delete.js');
+const deleteTable = require('./delete.js');
 
 const example = async function() {
-  await delete.example();
+  await deleteTable.example();
   await create.example();
 }
 
@@ -10,4 +10,4 @@ module.exports = {
   example
 }
 
-example();
+// example();

@@ -6,10 +6,10 @@ const get = require('./helpers/get.js');
 const seedEntry = function (exampleData) {
   for (const entry of exampleData) {
     const keys = Object.keys(entry);
-    const columns = getColumns(keys);
+    const columns = get.columns(keys);
 
     const values = Object.values(entry);
-    const tableValues = getValues(values);
+    const tableValues = get.values(values);
 
     insertInto.example(columns, tableValues);
   }

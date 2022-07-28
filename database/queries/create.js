@@ -136,4 +136,4 @@ module.exports = {
 }
 
 // allTables();
-// example();
+example();
