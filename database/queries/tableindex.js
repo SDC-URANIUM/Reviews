@@ -41,12 +41,17 @@ const onReviewsInfo = function() {
 const onPhotos = function() {
   const indexQueryId = "CREATE INDEX IF NOT EXISTS photos_id ON photos (id)";
   const indexQueryUrl = "CREATE INDEX IF NOT EXISTS photos_url ON photos (url)";
+  const indexQueryReviewId = "CREATE INDEX IF NOT EXISTS photos_review_id ON photos (review_id)";
 
   pool.query(indexQueryId, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
   });
   pool.query(indexQueryUrl, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryReviewId, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
   });
@@ -215,5 +220,11 @@ const onAll = function() {
 onAll();
 
 module.exports = {
-  example
+  example,
+  onReviewsInfo,
+  onPhotos,
+  onReviews,
+  onRatings,
+  onRecommendations,
+  onCharacteristics
 }

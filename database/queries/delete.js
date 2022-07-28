@@ -80,7 +80,6 @@ const allTables = async function() {
   await photosTable();
   await ratingsTable();
   await recommendationsTable();
-  await characteristicsTable();
 }
 
 module.exports = {
@@ -95,6 +94,7 @@ module.exports = {
   allTables
 }
 
-allTables();
+// allTables();
+// photosTable();
 // example();
 // characteristicsTable();

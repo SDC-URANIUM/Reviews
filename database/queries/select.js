@@ -26,8 +26,17 @@ const characteristicsByName = async function(name) {
   })
 }
 
+const photosByProductId = async function(review_id) {
+  const selectionQuery = "SELECT * FROM photos WHERE review_id='" + review_id + "'";
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) console.log(error);
+    else console.log(JSON.stringify(result.rows));
+  })
+}
+
 module.exports = {
   allFromExample
 }
 
-indexFromExample();
+photosByProductId(5);
