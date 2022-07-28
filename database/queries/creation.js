@@ -115,12 +115,12 @@ const metaTable = async function() {
 
 const allTables = async function() {
   await reviewsInfoTable();
-  await metaTable();
   await photosTable();
   await reviewTable();
   await ratingsTable();
   await recommendationsTable();
   await characteristicsTable();
+  await metaTable();
 }
 
 module.exports = {
@@ -131,5 +131,8 @@ module.exports = {
   photosTable,
   ratingsTable,
   recommendationsTable,
-  characteristicsTable
+  characteristicsTable,
+  allTables
 }
+
+// allTables();

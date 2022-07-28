@@ -1,3 +1,4 @@
+const pool = require('../db.js');
 
 const example = async function() {
   const deletionQuery = "DROP TABLE example";
@@ -9,7 +10,7 @@ const example = async function() {
 }
 
 const reviewsInfoTable = async function() {
-  const deletionQuery = "DROP TABLE reviewsinfo";
+  const deletionQuery = "DROP TABLE IF EXISTS reviewsinfo";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -18,7 +19,7 @@ const reviewsInfoTable = async function() {
 }
 
 const metaTable = async function() {
-  const deletionQuery = "DROP TABLE meta";
+  const deletionQuery = "DROP TABLE IF EXISTS meta";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -27,7 +28,7 @@ const metaTable = async function() {
 }
 
 const reviewTable = async function() {
-  const deletionQuery = "DROP TABLE review";
+  const deletionQuery = "DROP TABLE IF EXISTS review";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -36,7 +37,7 @@ const reviewTable = async function() {
 }
 
 const photosTable = async function() {
-  const deletionQuery = "DROP TABLE photos";
+  const deletionQuery = "DROP TABLE IF EXISTS photos";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -45,7 +46,7 @@ const photosTable = async function() {
 }
 
 const ratingsTable = async function() {
-  const deletionQuery = "DROP TABLE ratings";
+  const deletionQuery = "DROP TABLE IF EXISTS ratings";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -54,7 +55,7 @@ const ratingsTable = async function() {
 }
 
 const recommendationsTable = async function() {
-  const deletionQuery = "DROP TABLE recommendations";
+  const deletionQuery = "DROP TABLE IF EXISTS recommendations";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
@@ -63,12 +64,22 @@ const recommendationsTable = async function() {
 }
 
 const characteristicsTable = async function() {
-  const deletionQuery = "DROP TABLE characteristics";
+  const deletionQuery = "DROP TABLE IF EXISTS characteristics";
 
   pool.query(deletionQuery, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
   })
+}
+
+const allTables = async function() {
+  await reviewsInfoTable();
+  await metaTable();
+  await reviewTable();
+  await photosTable();
+  await ratingsTable();
+  await recommendationsTable();
+  await characteristicsTable();
 }
 
 module.exports = {
@@ -79,5 +90,8 @@ module.exports = {
   photosTable,
   ratingsTable,
   recommendationsTable,
-  characteristicsTable
+  characteristicsTable,
+  allTables
 }
+
+// allTables();
