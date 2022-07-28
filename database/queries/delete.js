@@ -72,14 +72,24 @@ const characteristicsTable = async function() {
   })
 }
 
+const characteristicReviewsTable = async function() {
+  const deletionQuery = "DROP TABLE IF EXISTS characteristicreviews";
+
+  pool.query(deletionQuery, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  })
+}
+
+
 const allTables = async function() {
   await example();
   await reviewsInfoTable();
   await metaTable();
   await reviewTable();
-  await photosTable();
   await ratingsTable();
   await recommendationsTable();
+  await characteristicReviewsTable();
 }
 
 module.exports = {
@@ -94,7 +104,7 @@ module.exports = {
   allTables
 }
 
-// allTables();
+allTables();
 // photosTable();
 // example();
 // characteristicsTable();

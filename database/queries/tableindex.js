@@ -204,6 +204,30 @@ const onMeta = function() {
   });
 }
 
+const onCharacteristicReviews = function() {
+  const indexQueryId = "CREATE INDEX IF NOT EXISTS characteristicreviews_id ON characteristicreviews (id)";
+  const indexQueryCharacteristicsId = "CREATE INDEX IF NOT EXISTS characteristicreviews_characteristics_id ON characteristicreviews (characteristics_id)";
+  const indexQueryReviewId = "CREATE INDEX IF NOT EXISTS characteristicreviews_review_id ON characteristicreviews (review_id)";
+  const indexQueryValue = "CREATE INDEX IF NOT EXISTS characteristicreviews_value ON characteristicreviews (value)";
+
+  pool.query(indexQueryId, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryReviewId, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryCharacteristicsId, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryValue, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+}
+
 const onAll = function() {
   example();
   onReviewsInfo();
