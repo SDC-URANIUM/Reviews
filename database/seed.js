@@ -1,25 +1,17 @@
 const extract = require('./extract-data.js');
 const pool = require('./db.js');
+const insertInto = require('./queries/insertInto.js');
 
-const seed = function (exampleData) {
-  useDatabase();
-  // for (const entry of exampleData) {
-  //   insertIntoDb(entry);
-  // }
-}
+const seedEntry = function (exampleData) {
+  for (const entry of exampleData) {
+    const keys = Object.keys(entry);
+    const columns = getColumns(keys);
 
-const insertIntoDb = function (entry, tableName) {
-  const keys = Object.keys(entry);
-  const columns = getColumns(keys);
+    const values = Object.values(entry);
+    const tableValues = getValues(values);
 
-  const values = Object.values(entry);
-  const tableValues = getValues(values);
-
-  const insertionQuery = 'INSERT INTO example ' + columns + ' VALUES ' + tableValues;
-  pool.query(insertionQuery, (error, result) => {
-    if (error) console.log(error);
-    else console.log(JSON.stringify(result));
-  })
+    insertInto.example(columns, tableValues);
+  }
 }
 
 const getColumns = function (keys) {
@@ -56,4 +48,4 @@ const useDatabase = function () {
 }
 
 // useDatabase();
-extract.readExampleCSV(seed);
+extract.readExampleCSV(seedEntry);
