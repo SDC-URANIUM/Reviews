@@ -9,9 +9,14 @@ const characteristics = function() {
   extract.characteristicDataFromCSV(seeder.characteristics);
 }
 
+const reviews = function() {
+  const callback = function() { console.log('finished') };
+  extract.reviewsDataFromCSV(callback);
+}
+
 module.exports = {
   example,
   characteristics
 }
 
-example();
+reviews();

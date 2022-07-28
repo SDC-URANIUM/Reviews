@@ -66,13 +66,16 @@ const photosTable = async function() {
 const reviewTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS review (\
     review_id int NOT NULL PRIMARY KEY,\
+    product_id int NOT NULL,\
     rating int,\
-    summary TEXT,\
-    recommend boolean,\
-    response TEXT,\
-    body TEXT,\
     date TEXT,\
+    summary TEXT,\
+    body TEXT,\
+    recommend boolean,\
+    reported boolean,\
     reviewer_name TEXT,\
+    reviewer_email TEXT,\
+    response TEXT,\
     helpfulness int,\
     photo_id int NOT NULL REFERENCES photos(id)\
     )";
