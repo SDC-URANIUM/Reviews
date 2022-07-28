@@ -1,6 +1,6 @@
-const pool = require('./db.js');
+const pool = require('../db.js');
 
-const createExample = async function() {
+const example = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS example (\
     name VARCHAR(255) NOT NULL,\
     years VARCHAR(255) NOT NULL,\
@@ -13,7 +13,7 @@ const createExample = async function() {
   })
 }
 
-const createReviewsInfoTable = async function() {
+const reviewsInfoTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS reviewsinfo (\
     Product VARCHAR(255) NOT NULL PRIMARY KEY,\
     page int NOT NULL,\
@@ -26,11 +26,10 @@ const createReviewsInfoTable = async function() {
   })
 }
 
-const createMetaTable = async function() {
-  const creationQuery = "CREATE TABLE IF NOT EXISTS meta (\
-    product_id VARCHAR(255) NOT NULL PRIMARY KEY,\
-    ratings_id: int NOT NULL FOREIGN KEY,\
-    characteristics_id: int NOT NULL FOREIGN KEY\
+const photosTable = async function() {
+  const creationQuery = "CREATE TABLE IF NOT EXISTS photos (\
+    id SERIAL PRIMARY KEY,\
+    url VARCHAR(255) NOT NULL\
     )";
 
   pool.query(creationQuery, (error, result) => {
@@ -39,7 +38,7 @@ const createMetaTable = async function() {
   })
 }
 
-const createReviewTable = async function() {
+const reviewTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS review (\
     review_id int NOT NULL PRIMARY KEY,\
     rating int NOT NULL,\
@@ -50,7 +49,7 @@ const createReviewTable = async function() {
     date VARCHAR(255) NOT NULL,\
     reviewer_name VARCHAR(255) NOT NULL,\
     helpfulness int NOT NULL,\
-    photo_id int NOT NULL FOREIGN KEY\
+    photo_id int NOT NULL REFERENCES photos(id)\
     )";
 
   pool.query(creationQuery, (error, result) => {
@@ -59,20 +58,7 @@ const createReviewTable = async function() {
   })
 }
 
-const createPhotosTable = async function() {
-  const creationQuery = "CREATE TABLE IF NOT EXISTS photos (\
-    id SERIES PRIMARY KEY,\
-    url VARCHAR(255) NOT NULL,\
-    review_id int NOT NULL FOREIGN KEY\
-    )";
-
-  pool.query(creationQuery, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
-  })
-}
-
-const createRatingsTable = async function() {
+const ratingsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS ratings (\
     id SERIAL PRIMARY KEY,\
     onestar int NOT NULL,\
@@ -88,7 +74,7 @@ const createRatingsTable = async function() {
   })
 }
 
-const createRecommendationsTable = async function() {
+const recommendationsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS recommendations (\
     id SERIAL PRIMARY KEY,\
     recommended int NOT NULL,\
@@ -101,7 +87,7 @@ const createRecommendationsTable = async function() {
   })
 }
 
-const createCharacteristicsTable = async function() {
+const characteristicsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS characteristics (\
     id int NOT NULL PRIMARY KEY,\
     product_id int NOT NULL,\
@@ -113,3 +99,39 @@ const createCharacteristicsTable = async function() {
     else console.log(result);
   })
 }
+
+const metaTable = async function() {
+  const creationQuery = "CREATE TABLE IF NOT EXISTS meta (\
+    product_id VARCHAR(255) NOT NULL PRIMARY KEY,\
+    ratings_id int NOT NULL REFERENCES ratings(id),\
+    characteristics_id int NOT NULL REFERENCES characteristics(id)\
+    )";
+
+  pool.query(creationQuery, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  })
+}
+
+const allTables = async function() {
+  await reviewsInfoTable();
+  await metaTable();
+  await photosTable();
+  await reviewTable();
+  await ratingsTable();
+  await recommendationsTable();
+  await characteristicsTable();
+}
+
+module.exports = {
+  example,
+  reviewsInfoTable,
+  metaTable,
+  reviewTable,
+  photosTable,
+  ratingsTable,
+  recommendationsTable,
+  characteristicsTable
+}
+
+allTables();
