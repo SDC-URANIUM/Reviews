@@ -1,6 +1,7 @@
 const extract = require('./extract-data.js');
 const pool = require('./db.js');
 const insertInto = require('./queries/insertInto.js');
+const get = require('./helpers/get.js');
 
 const seedEntry = function (exampleData) {
   for (const entry of exampleData) {
