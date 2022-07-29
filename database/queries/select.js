@@ -35,8 +35,17 @@ const photosByProductId = async function(review_id) {
   })
 }
 
+const productIds = async function() {
+  const selectionQuery = "SELECT * FROM review WHERE product_id=1";
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) console.log(error);
+    else console.log(JSON.stringify(result.rows));
+  })
+}
+
 module.exports = {
   allFromExample
 }
 
-photosByProductId(5);
+productIds();

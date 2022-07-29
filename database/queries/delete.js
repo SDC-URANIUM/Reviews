@@ -86,10 +86,8 @@ const allTables = async function() {
   await example();
   await reviewsInfoTable();
   await metaTable();
-  await reviewTable();
   await ratingsTable();
   await recommendationsTable();
-  await characteristicReviewsTable();
 }
 
 module.exports = {

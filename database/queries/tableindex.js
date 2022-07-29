@@ -58,7 +58,7 @@ const onPhotos = function() {
 }
 
 const onReviews = function() {
-  const indexQueryReviewId = "CREATE INDEX IF NOT EXISTS reviews_review_id ON review (review_id)";
+  const indexQueryReviewId = "CREATE INDEX IF NOT EXISTS reviews_id ON review (id)";
   const indexQueryRating = "CREATE INDEX IF NOT EXISTS reviews_rating ON review (rating)";
   const indexQuerySummary = "CREATE INDEX IF NOT EXISTS reviews_summary ON review (summary)";
   const indexQueryRecommend = "CREATE INDEX IF NOT EXISTS reviews_recommend ON review (recommend)";
@@ -67,12 +67,23 @@ const onReviews = function() {
   const indexQueryDate = "CREATE INDEX IF NOT EXISTS reviews_date ON review (date)";
   const indexQueryReviewer = "CREATE INDEX IF NOT EXISTS reviews_reviewer_name ON review (reviewer_name)";
   const indexQueryHelpfulness = "CREATE INDEX IF NOT EXISTS reviews_helpfulness ON review (helpfulness)";
-  const indexQueryPhotoId = "CREATE INDEX IF NOT EXISTS reviews_photo_id ON review (photo_id)";
+  const indexQueryProductId = "CREATE INDEX IF NOT EXISTS reviews_product_id ON review (product_id)";
+  const indexQueryReported = "CREATE INDEX IF NOT EXISTS reviews_reported ON review (reported)";
+  const indexQueryReviewerEmail = "CREATE INDEX IF NOT EXISTS reviews_reviewer_email ON review (reviewer_email)";
 
-  pool.query(indexQueryPhotoId, (error, result) => {
+  pool.query(indexQueryProductId, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
   });
+  pool.query(indexQueryReported, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryReviewerEmail, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+
   pool.query(indexQueryDate, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
@@ -114,7 +125,7 @@ const onReviews = function() {
 }
 
 const onRatings = function() {
-  const indexQueryId = "CREATE INDEX IF NOT EXISTS ratings_id ON ratings (id)";
+  const indexQueryId = "CREATE INDEX IF NOT EXISTS ratings_product_id ON ratings (product_id)";
   const indexQueryOneStar = "CREATE INDEX IF NOT EXISTS ratings_onestar ON ratings (onestar)";
   const indexQueryTwoStar = "CREATE INDEX IF NOT EXISTS ratings_twostar ON ratings (twostar)";
   const indexQueryThreeStar = "CREATE INDEX IF NOT EXISTS ratings_threestar ON ratings (threestar)";

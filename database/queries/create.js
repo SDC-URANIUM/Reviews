@@ -65,7 +65,7 @@ const photosTable = async function() {
 
 const reviewTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS review (\
-    review_id int NOT NULL PRIMARY KEY,\
+    id int NOT NULL PRIMARY KEY,\
     product_id int NOT NULL,\
     rating int,\
     date TEXT,\
@@ -76,8 +76,7 @@ const reviewTable = async function() {
     reviewer_name TEXT,\
     reviewer_email TEXT,\
     response TEXT,\
-    helpfulness int,\
-    photo_id int NOT NULL REFERENCES photos(id)\
+    helpfulness int\
     )";
 
   const changeOwnerQuery = "ALTER TABLE review OWNER TO root";
@@ -96,7 +95,7 @@ const reviewTable = async function() {
 
 const ratingsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS ratings (\
-    id SERIAL PRIMARY KEY,\
+    product_id TEXT NOT NULL PRIMARY KEY,\
     onestar int,\
     twostar int,\
     threestar int,\
@@ -163,7 +162,7 @@ const characteristicsTable = async function() {
 const metaTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS meta (\
     product_id TEXT NOT NULL PRIMARY KEY,\
-    ratings_id int REFERENCES ratings(id),\
+    ratings_id TEXT REFERENCES ratings(product_id),\
     characteristics_id int REFERENCES characteristics(id)\
     )";
 
@@ -185,7 +184,7 @@ const characteristicReviewsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS characteristicreviews (\
     id int NOT NULL PRIMARY KEY,\
     characteristics_id int REFERENCES characteristics(id),\
-    review_id int REFERENCES review(review_id),\
+    review_id int REFERENCES review(id),\
     value int\
     )";
 
@@ -206,13 +205,9 @@ const characteristicReviewsTable = async function() {
 const allTables = async function() {
   await example();
   await reviewsInfoTable();
-  await photosTable();
-  await reviewTable();
   await ratingsTable();
   await recommendationsTable();
-  await characteristicsTable();
   await metaTable();
-  await characteristicReviewsTable();
 }
 
 module.exports = {
