@@ -56,7 +56,6 @@ const ratings = async function(columns, values) {
 
   pool.query(insertionQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
   })
 }
 

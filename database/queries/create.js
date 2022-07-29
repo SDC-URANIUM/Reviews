@@ -119,7 +119,7 @@ const ratingsTable = async function() {
 
 const recommendationsTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS recommendations (\
-    id SERIAL PRIMARY KEY,\
+    product_id TEXT NOT NULL PRIMARY KEY,\
     recommended int,\
     notrecommended int\
     )";
@@ -163,6 +163,7 @@ const metaTable = async function() {
   const creationQuery = "CREATE TABLE IF NOT EXISTS meta (\
     product_id TEXT NOT NULL PRIMARY KEY,\
     ratings_id TEXT REFERENCES ratings(product_id),\
+    recommendations_id TEXT REFERENCES recommendations(product_id),\
     characteristics_id int REFERENCES characteristics(id)\
     )";
 
@@ -204,7 +205,6 @@ const characteristicReviewsTable = async function() {
 
 const allTables = async function() {
   await example();
-  await reviewsInfoTable();
   await ratingsTable();
   await recommendationsTable();
   await metaTable();

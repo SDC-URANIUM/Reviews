@@ -11,7 +11,7 @@ const columns = function (keys) {
 const values = function (extractedValues) {
   let valueConstructor = '(';
   for (value of extractedValues) {
-    valueConstructor += '\'' + value + '\'' + ', ';
+    valueConstructor += value + ', ';
   }
 
   const values = valueConstructor.slice(0, valueConstructor.length - 2) + ')';

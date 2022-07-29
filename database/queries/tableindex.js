@@ -19,24 +19,24 @@ const example = function() {
   });
 }
 
-const onReviewsInfo = function() {
-  const indexQueryProduct = "CREATE INDEX IF NOT EXISTS reviewsinfo_product ON reviewsinfo (Product)";
-  const indexQueryPage = "CREATE INDEX IF NOT EXISTS reviewsinfo_page ON reviewsinfo (page)";
-  const indexQueryCount = "CREATE INDEX IF NOT EXISTS reviewsinfo_count ON reviewsinfo (count)";
+// const onReviewsInfo = function() {
+//   const indexQueryProduct = "CREATE INDEX IF NOT EXISTS reviewsinfo_product ON reviewsinfo (Product)";
+//   const indexQueryPage = "CREATE INDEX IF NOT EXISTS reviewsinfo_page ON reviewsinfo (page)";
+//   const indexQueryCount = "CREATE INDEX IF NOT EXISTS reviewsinfo_count ON reviewsinfo (count)";
 
-  pool.query(indexQueryProduct, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
-  });
-  pool.query(indexQueryPage, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
-  });
-  pool.query(indexQueryCount, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
-  });
-}
+//   pool.query(indexQueryProduct, (error, result) => {
+//     if (error) console.log(error);
+//     else console.log(result);
+//   });
+//   pool.query(indexQueryPage, (error, result) => {
+//     if (error) console.log(error);
+//     else console.log(result);
+//   });
+//   pool.query(indexQueryCount, (error, result) => {
+//     if (error) console.log(error);
+//     else console.log(result);
+//   });
+// }
 
 const onPhotos = function() {
   const indexQueryId = "CREATE INDEX IF NOT EXISTS photos_id ON photos (id)";
@@ -159,7 +159,7 @@ const onRatings = function() {
 }
 
 const onRecommendations = function() {
-  const indexQueryId = "CREATE INDEX IF NOT EXISTS recommendations_id ON recommendations (id)";
+  const indexQueryId = "CREATE INDEX IF NOT EXISTS recommendations_id ON recommendations (product_id)";
   const indexQueryRecommended = "CREATE INDEX IF NOT EXISTS recommendations_recommended ON recommendations (recommended)";
   const indexQueryNotRecommended = "CREATE INDEX IF NOT EXISTS recommendations_notrecommended ON recommendations (notrecommended)";
 
@@ -200,6 +200,7 @@ const onMeta = function() {
   const indexQueryProductId = "CREATE INDEX IF NOT EXISTS meta_product_id ON meta (product_id)";
   const indexQueryRatingsId = "CREATE INDEX IF NOT EXISTS meta_ratings_id ON meta (ratings_id)";
   const indexQueryCharacteristicsId = "CREATE INDEX IF NOT EXISTS meta_characteristics_id ON meta (characteristics_id)";
+  const indexQueryRecommendationsId = "CREATE INDEX IF NOT EXISTS meta_recommendations_id ON meta (recommendations_id)"
 
   pool.query(indexQueryProductId, (error, result) => {
     if (error) console.log(error);
@@ -210,6 +211,10 @@ const onMeta = function() {
     else console.log(result);
   });
   pool.query(indexQueryCharacteristicsId, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  });
+  pool.query(indexQueryRecommendationsId, (error, result) => {
     if (error) console.log(error);
     else console.log(result);
   });
@@ -241,7 +246,6 @@ const onCharacteristicReviews = function() {
 
 const onAll = function() {
   example();
-  onReviewsInfo();
   onPhotos();
   onReviews();
   onRatings();
@@ -256,7 +260,6 @@ onAll();
 
 module.exports = {
   example,
-  onReviewsInfo,
   onPhotos,
   onReviews,
   onRatings,
