@@ -86,7 +86,6 @@ const allTables = async function() {
   await example();
   await reviewsInfoTable();
   await metaTable();
-  await ratingsTable();
   await recommendationsTable();
 }
 

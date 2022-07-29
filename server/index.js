@@ -11,11 +11,17 @@ app.use(express.json());
 app.get('/reviews', (req, res) => {
   console.log('entering reviews endpoint');
 
-  const productId = req.body.product_id;
+  const productId = req.query.product_id;
+  // console.log(req.query);
 
   const response = {};
-  const callback = function(reviews) { response.results = reviews };
-  select.reviewsByProductId(productId, callback);
+  select.reviewsByProductId(productId, (error, reviews) => {
+    if (error) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).send(reviews);
+    }
+  });
 });
 
 app.get('/reviews/meta', (req, res) => {

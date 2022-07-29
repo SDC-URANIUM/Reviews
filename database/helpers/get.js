@@ -9,9 +9,16 @@ const columns = function (keys) {
 }
 
 const values = function (extractedValues) {
+
   let valueConstructor = '(';
-  for (value of extractedValues) {
-    valueConstructor += value + ', ';
+  for (let currentIndex = 0; currentIndex < extractedValues.length; currentIndex++) {
+    let value = extractedValues[currentIndex];
+
+    if (currentIndex === 0) {
+      valueConstructor += "'" + value + "', ";
+    } else {
+      valueConstructor += value + ', ';
+    }
   }
 
   const values = valueConstructor.slice(0, valueConstructor.length - 2) + ')';

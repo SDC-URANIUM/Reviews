@@ -41,19 +41,19 @@ const reviewsByProductId = async function(productId, callback) {
   const selectionQuery = "SELECT * FROM review WHERE product_id=" + productId;
 
   pool.query(selectionQuery, (error, result) => {
-    if (error) console.log(error);
-    else callback(result.rows);
+    if (error) callback(error, null);
+    else callback(null, result.rows);
   })
 }
 
-// const productIds = async function(productId) {
-//   const selectionQuery = "SELECT * FROM review WHERE product_id=" + productId;
+const productIds = async function(productId) {
+  const selectionQuery = "SELECT * FROM review WHERE product_id=" + productId;
 
-//   pool.query(selectionQuery, (error, result) => {
-//     if (error) console.log(error);
-//     else populateRatings(result.rows, productId);
-//   })
-// }
+  pool.query(selectionQuery, (error, result) => {
+    if (error) console.log(error);
+    else populateRecommendations(result.rows, productId);
+  })
+}
 
 const allRatings = async function() {
   const selectionQuery = "SELECT * FROM ratings";
@@ -82,62 +82,45 @@ const maxProductId = async function() {
   })
 }
 
-// const ratingsColumns = '(product_id, onestar, twostar, threestar, fourstar, fivestar)';
+const recommendedColumns = '(product_id, recommended, not recommended)';
 
-// const populateRatings = async function(data, productId) {
-//   let oneStarCount = 0;
-//   let twoStarCount = 0;
-//   let threeStarCount = 0;
-//   let fourStarCount = 0;
-//   let fiveStarCount = 0;
+const populateRecommendations = async function(data, productId) {
+  let recommendedCount = 0;
+  let notRecommendedCount = 0;
 
-//   for (const entry of data) {
-//     const currentRating = entry.rating;
+  for (const entry of data) {
+    const isRecommended = entry.recommend;
 
-//     switch(currentRating) {
-//       case 1:
-//         oneStarCount++;
-//         break;
-//       case 2:
-//         twoStarCount++;
-//         break;
-//       case 3:
-//         threeStarCount++;
-//         break;
-//       case 4:
-//         fourStarCount++;
-//         break;
-//       case 5:
-//         fiveStarCount++;
-//         break;
-//     }
-//   }
+    if (isRecommended) {
+      recommendedCount++;
+    } else if (isRecommended === false) {
+      notRecommendedCount++;
+    }
+  }
 
-  // console.log('product id is ' + productId);
-  // console.log('one star count is ' + oneStarCount);
-  // console.log('two star count is ' + twoStarCount);
-  // console.log('three star count is ' + threeStarCount);
-  // console.log('four star count is ' + fourStarCount);
-  // console.log('five star count is ' + fiveStarCount);
+  console.log('recommended count is ' + recommendedCount);
+  console.log('not recommended count is ' + notRecommendedCount);
 
-//   const ratingsValues = get.values([productId, oneStarCount, twoStarCount, threeStarCount, fourStarCount, fiveStarCount]);
-//   // console.log('rating values are ' + ratingsValues);
+  const recommendedValues = get.values([productId, recommendedCount, notRecommendedCount]);
+  console.log('rating values are ' + recommendedValues);
 
-//   insertInto.ratings(ratingsColumns, ratingsValues);
-// }
-
-// const seedRatings = async function() {
-//   for (let currentId = 11; currentId <= 1000011; currentId++) {
-//     productIds(currentId);
-//   }
-// }
-
-module.exports = {
-  allFromExample
+  insertInto.recommendations(recommendedColumns, recommendedValues);
 }
 
-const callback = function(results) { console.log(JSON.stringify(results)) };
-ratingsByProductId(1000011, callback);
+const seedRatings = async function() {
+  for (let currentId = 11; currentId <= 1000011; currentId++) {
+    productIds(currentId);
+  }
+}
+
+module.exports = {
+  reviewsByProductId
+}
+
+// const callback = function(results) { console.log(JSON.stringify(results)) };
+// reviewsByProductId(4, callback);
+// productIds(1);
+
 // allRatings();
 // productIds(1);
 // productIds(2);

@@ -205,7 +205,6 @@ const characteristicReviewsTable = async function() {
 
 const allTables = async function() {
   await example();
-  await ratingsTable();
   await recommendationsTable();
   await metaTable();
 }
