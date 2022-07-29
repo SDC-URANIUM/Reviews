@@ -1,10 +1,21 @@
 const express = require('express');
 const path = require('path');
 
+const select = require('../database/queries/select.js');
+const insertInto = require('../database/queries/insertInto.js');
+
 const app = express();
+
+app.use(express.json());
 
 app.get('/reviews', (req, res) => {
   console.log('entering reviews endpoint');
+
+  const productId = req.body.product_id;
+
+  const response = {};
+  const callback = function(reviews) { response.results = reviews };
+  select.reviewsByProductId(productId, callback);
 });
 
 app.get('/reviews/meta', (req, res) => {
