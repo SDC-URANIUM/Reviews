@@ -39,7 +39,7 @@ const photosByProductId = async function(review_id) {
 
 const reviewsByProductId = async function(productId, callback) {
   const selectionQuery = "SELECT review.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, ";
-  const aggQuery = "json_build_object('photos', (SELECT json_agg(row_to_json(photos)) FROM (SELECT id, url FROM photos WHERE review.review_id = photos.review_id) photos))  FROM review"
+  const aggQuery = "(SELECT json_agg(row_to_json(photos)) FROM (SELECT id, url FROM photos WHERE review.review_id = photos.review_id) photos) as photos FROM review"
   const joinQuery = " WHERE review.product_id=" + productId;
   // " FULL OUTER JOIN photos ON review.review_id = photos.review_id WHERE review.product_id=" + productId
   // JOIN photos ON review.review_id = photos.review_id
@@ -51,7 +51,6 @@ const reviewsByProductId = async function(productId, callback) {
       callback(error, null);
     }
     else {
-      console.log(JSON.stringify(result.rows));
       callback(null, result.rows)
     };
   })

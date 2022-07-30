@@ -14,13 +14,21 @@ app.get('/reviews', (req, res) => {
 
   const productId = req.query.product_id;
   // console.log(req.query);
+  const page = req.query.page;
+  const count = req.query.count;
 
   const response = {};
+
+  response.product = productId;
+  response.page = page;
+  response.count = count;
+
   select.reviewsByProductId(productId, (error, reviews) => {
     if (error) {
       res.sendStatus(404);
     } else {
-      res.status(200).send(reviews);
+      response.results = reviews;
+      res.status(200).send(response);
     }
   });
 });
