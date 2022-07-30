@@ -11,10 +11,8 @@ const columns = function (keys) {
 const values = function (extractedValues) {
 
   let valueConstructor = '(';
-  for (let currentIndex = 0; currentIndex < extractedValues.length; currentIndex++) {
-    let value = extractedValues[currentIndex];
-
-    if (currentIndex === 0) {
+  for (const value of extractedValues) {
+    if (typeof value === 'string') {
       valueConstructor += "'" + value + "', ";
     } else {
       valueConstructor += value + ', ';

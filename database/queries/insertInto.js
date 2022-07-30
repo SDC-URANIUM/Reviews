@@ -30,13 +30,19 @@ const meta = async function(columns, values) {
   })
 }
 
-const review = async function(columns, values) {
+const review = async function(columns, values, callback) {
   const insertionQuery = "INSERT INTO review \
     " + columns + " VALUES " + values;
 
   pool.query(insertionQuery, (error, result) => {
-    if (error) console.log(error);
-    else console.log(result);
+    if (error) {
+      console.log(error);
+      callback(error, null);
+    }
+    else {
+      console.log(result);
+      callback(null, result);
+    }
   })
 }
 

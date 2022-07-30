@@ -38,11 +38,22 @@ const photosByProductId = async function(review_id) {
 }
 
 const reviewsByProductId = async function(productId, callback) {
-  const selectionQuery = "SELECT * FROM review WHERE product_id=" + productId;
+  const selectionQuery = "SELECT review.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, ";
+  const aggQuery = "json_build_object('photos', (SELECT json_agg(row_to_json(photos)) FROM (SELECT id, url FROM photos WHERE review.review_id = photos.review_id) photos))  FROM review"
+  const joinQuery = " WHERE review.product_id=" + productId;
+  // " FULL OUTER JOIN photos ON review.review_id = photos.review_id WHERE review.product_id=" + productId
+  // JOIN photos ON review.review_id = photos.review_id
+  const fullQuery = selectionQuery + aggQuery + joinQuery;
 
-  pool.query(selectionQuery, (error, result) => {
-    if (error) callback(error, null);
-    else callback(null, result.rows);
+  pool.query(fullQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, null);
+    }
+    else {
+      console.log(JSON.stringify(result.rows));
+      callback(null, result.rows)
+    };
   })
 }
 
@@ -116,6 +127,8 @@ const seedRatings = async function() {
 module.exports = {
   reviewsByProductId
 }
+
+// photosByProductId(5);
 
 // const callback = function(results) { console.log(JSON.stringify(results)) };
 // reviewsByProductId(4, callback);
