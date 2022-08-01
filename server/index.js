@@ -45,8 +45,11 @@ app.post('/reviews', (req, res) => {
   const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
   const values = get.values([19999999, data.product_id, data.rating, new Date(), data.summary, data.body, data.recommend, false, data.name, data.email, null, 0]);
 
-  insertInto.review(columns, values);
   update.ratings(data.rating, data.product_id);
+  insertInto.review(columns, values, (error, result) => {
+    if (error) res.sendStatus(500);
+    else res.status(201).send(result);
+  });
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
