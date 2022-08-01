@@ -32,7 +32,7 @@ const photos = async function(urls, review_id) {
   })
 }
 
-const reviews = async function(dataValues, urls, callback) {
+const reviews = async function(dataValues, urls, characteristics, callback) {
   console.log('getting into update reviews');
   const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
 
@@ -47,6 +47,8 @@ const reviews = async function(dataValues, urls, callback) {
       console.log("🚀 ~ file: update.js ~ line 45 ~ select.maxId ~ values", values)
 
       photos(urls, newId);
+      characteristicReviews(characteristics, dataValues[1], newId);
+      characteristicsTable(characteristics, dataValues[1]);
 
       insertInto.review(columns, values, callback);
     }
@@ -86,6 +88,31 @@ const recommendations = async function (recommended, product_id) {
   pool.query(updateQuery, (error, result) => {
     if (error) console.log('ERROR IN RECOMMENDATIONS', error);
   });
+}
+
+const characteristicReviews = async function(characteristics, review_id, product_id) {
+  for (const key in characteristics) {
+    const currentCharacteristic = characteristics[key];
+
+    const characteristic_id = currentCharacteristic.id;
+    const value = currentCharacteristic.value;
+
+    const values = get.values([product_id, characteristic_id, review_id, value]);
+    insertInto.characteristicReviews(values);
+  }
+}
+
+const characteristicsTable = async function(characteristics, product_id) {
+  for (const key in characteristics) {
+    const currentCharacteristic = characteristics[key];
+
+    const characteristic_id = currentCharacteristic.id;
+    const name = currentCharacteristic.name;
+
+    const values = get.values([characteristic_id, product_id, name]);
+
+    insertInto.characteristics(values);
+  }
 }
 
 module.exports = {

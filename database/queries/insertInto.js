@@ -73,9 +73,17 @@ const recommendations = async function (columns, values) {
   })
 }
 
-const characteristics = async function (columns, values) {
-  const insertionQuery = "INSERT INTO characteristics \
-    " + columns + " VALUES " + values;
+const characteristics = async function (values) {
+  const insertionQuery = "INSERT INTO characteristics VALUES " + values;
+
+  pool.query(insertionQuery, (error, result) => {
+    if (error) console.log(error);
+    else console.log(result);
+  })
+}
+
+const characteristicReviews = async function (values) {
+  const insertionQuery = "INSERT INTO characteristicreviews VALUES " + values;
 
   pool.query(insertionQuery, (error, result) => {
     if (error) console.log(error);
@@ -93,4 +101,5 @@ module.exports = {
   ratings,
   recommendations,
   characteristics,
+  characteristicReviews
 }

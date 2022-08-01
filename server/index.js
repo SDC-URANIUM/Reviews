@@ -53,7 +53,7 @@ app.post('/reviews', (req, res) => {
 
   update.recommendations(data.recommend, data.product_id);
   update.ratings(data.rating, data.product_id);
-  update.reviews(values, [], (error, result) => {
+  update.reviews(values, [], {}, (error, result) => {
     if (error) res.sendStatus(500);
     else res.status(201).send(result);
   })
