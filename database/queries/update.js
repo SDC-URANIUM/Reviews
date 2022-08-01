@@ -75,12 +75,22 @@ const reported = async function(review_id, callback) {
   })
 }
 
+const recommendations = async function (recommended, product_id) {
+  const columnToUpdate = recommended ? 'recommended' : 'notrecommended';
+  const updateQuery = "UPDATE ratings SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
+
+  pool.query(updateQuery, (error, result) => {
+    if (error) console.log(error);
+  });
+}
+
 module.exports = {
   helpfulness,
   reported,
   reviews,
   photos,
-  ratings
+  ratings,
+  recommendations
 }
 
 

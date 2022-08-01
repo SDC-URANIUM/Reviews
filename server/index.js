@@ -47,6 +47,7 @@ app.post('/reviews', (req, res) => {
   const data = req.body;
   const values = [null, data.product_id, data.rating, new Date(), data.summary, data.body, data.recommend, false, data.name, data.email, null, 0];
 
+  update.recommendations(data.recommend, data.product_id);
   update.ratings(data.rating, data.product_id);
   update.reviews(values, data.photos, (error, result) => {
     if (error) res.sendStatus(500);
