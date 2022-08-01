@@ -63,7 +63,7 @@ const helpfulness = async function(review_id, callback) {
 }
 
 const reported = async function(review_id, callback) {
-  const updateQuery = 'UPDATE review SET reported = true WHERE id=' + review_id;
+  const updateQuery = 'UPDATE review SET reported = true WHERE review_id=' + review_id;
 
   pool.query(updateQuery, (error, result) => {
     if (error) {
