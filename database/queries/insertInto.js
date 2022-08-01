@@ -36,22 +36,22 @@ const review = async function (columns, values, callback) {
 
   pool.query(insertionQuery, (error, result) => {
     if (error) {
-      console.log(error);
+      console.log('ERROR IN INSERTING REVIEW', error);
       callback(error, null);
     }
     else {
-      console.log(result);
+      // console.log(result);
       callback(null, result);
     }
   })
 }
 
 const photos = async function (columns, values) {
-  const insertionQuery = "INSERT INTO photos \
-    " + columns + " VALUES " + values;
+  const insertionQuery = "INSERT INTO photos VALUES " + values;
+  console.log("🚀 ~ file: insertInto.js ~ line 51 ~ photos ~ insertionQuery", insertionQuery)
 
   pool.query(insertionQuery, (error, result) => {
-    if (error) console.log(error);
+    if (error) console.log('ERROR INSERTING INTO PHOTOS', error);
     else console.log(result);
   })
 }
@@ -61,7 +61,7 @@ const ratings = async function (columns, values) {
     " + columns + " VALUES " + values;
 
   pool.query(insertionQuery, (error, result) => {
-    if (error) console.log(error);
+    if (error) console.log('ERROR INSERTING INTO RATINGS', error);
   })
 }
 
@@ -69,7 +69,7 @@ const recommendations = async function (columns, values) {
   const insertionQuery = "INSERT INTO recommendations VALUES " + values;
 
   pool.query(insertionQuery, (error, result) => {
-    if (error) console.log(error);
+    if (error) console.log('ERROR INSERTING INTO RECOMMENDATIONS', error);
   })
 }
 

@@ -44,12 +44,16 @@ app.get('/reviews/meta', (req, res) => {
 app.post('/reviews', (req, res) => {
   console.log('entering post reviews endpoint');
 
-  const data = req.body;
-  const values = [null, data.product_id, data.rating, new Date(), data.summary, data.body, data.recommend, false, data.name, data.email, null, 0];
+  const data = req.query;
+  console.log(JSON.stringify(data));
+  const date = new Date();
+  const time = date.getTime();
+
+  const values = [null, data.product_id, data.rating, time, data.summary, data.body, data.recommend, false, data.name, data.email, null, 0];
 
   update.recommendations(data.recommend, data.product_id);
   update.ratings(data.rating, data.product_id);
-  update.reviews(values, data.photos, (error, result) => {
+  update.reviews(values, [], (error, result) => {
     if (error) res.sendStatus(500);
     else res.status(201).send(result);
   })

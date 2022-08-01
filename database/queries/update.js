@@ -6,6 +6,8 @@ const select = require('./select.js');
 
 const ratings = async function (rating, product_id) {
   const columnToUpdate = get.columnFromRating(rating);
+  // console.log("🚀 ~ file: update.js ~ line 9 ~ ratings ~ columnToUpdate", columnToUpdate)
+
   const updateQuery = "UPDATE ratings SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
 
   pool.query(updateQuery, (error, result) => {
@@ -24,28 +26,30 @@ const photos = async function(urls, review_id) {
         insertInto.photos(columns, values);
         newId++;
       }
+    } else {
+      console.log('ERROR IN PHOTOS', error);
     }
   })
 }
 
 const reviews = async function(dataValues, urls, callback) {
+  console.log('getting into update reviews');
   const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
 
   select.maxId('review', (error, max) => {
-    const newId = max + 1;
-    dataValues[0] = newId;
+    if (error) console.log('error in getting max id from review', error);
+    else {
+      console.log('max is', max);
+      const newId = max + 1;
+      dataValues[0] = newId;
 
-    const values = get.values(dataValues);
+      const values = get.values(dataValues);
+      console.log("🚀 ~ file: update.js ~ line 45 ~ select.maxId ~ values", values)
 
-    photos(urls, newId);
+      photos(urls, newId);
 
-    insertInto.review(columns, values, (error, result) => {
-      if (error) {
-        console.log(error);
-        callback(error, result);
-      }
-      else callback(null, result);
-    });
+      insertInto.review(columns, values, callback);
+    }
   });
 }
 
@@ -54,7 +58,7 @@ const helpfulness = async function(review_id, callback) {
 
   pool.query(updateQuery, (error, result) => {
     if (error) {
-      console.log(error);
+      console.log('ERROR IN UPDATING HELPFULNESS', error);
       callback(error, result);
     } else {
       callback(null, result);
@@ -77,10 +81,10 @@ const reported = async function(review_id, callback) {
 
 const recommendations = async function (recommended, product_id) {
   const columnToUpdate = recommended ? 'recommended' : 'notrecommended';
-  const updateQuery = "UPDATE ratings SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
+  const updateQuery = "UPDATE recommendations SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
 
   pool.query(updateQuery, (error, result) => {
-    if (error) console.log(error);
+    if (error) console.log('ERROR IN RECOMMENDATIONS', error);
   });
 }
 

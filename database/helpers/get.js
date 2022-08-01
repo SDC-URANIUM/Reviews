@@ -26,19 +26,19 @@ const values = function (extractedValues) {
 
 const columnFromRating = function(rating) {
   switch(rating) {
-    case 1:
+    case '1':
       return 'onestar';
       break;
-    case 2:
+    case '2':
       return 'twostar';
       break;
-    case 3:
+    case '3':
       return 'threestar';
       break;
-    case 4:
+    case '4':
       return 'fourstar';
       break;
-    case 5:
+    case '5':
       return 'fivestar';
       break;
     default:

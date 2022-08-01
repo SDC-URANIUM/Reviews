@@ -38,11 +38,19 @@ const photosByProductId = async function(review_id) {
 }
 
 const reviewsByProductId = async function(productId, callback) {
-  const selectionQuery = "SELECT review.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, ";
-  const aggQuery = "(SELECT json_agg(row_to_json(photos)) FROM (SELECT id, url FROM photos WHERE review.review_id = photos.review_id) photos) as photos FROM review";
-  const joinQuery = " WHERE review.product_id=" + productId;
+  const beginningOfMainQuery = "SELECT review.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, ";
 
-  const fullQuery = selectionQuery + aggQuery + joinQuery;
+  const aliasForFormatToUse = "photoResults";
+  const formatYouWant = "json_agg(row_to_json(" + aliasForFormatToUse + "))";
+  const queryToDataYouWant = "SELECT id, url FROM photos WHERE review.review_id = photos.review_id";
+  const columnYouWantItAs = "photos";
+  const originalTableWhoseQueryYouWantToAddTo = "review";
+
+  const aggQuery = "(SELECT " + formatYouWant + " FROM (" + queryToDataYouWant + ") as " + aliasForFormatToUse + ") as " + columnYouWantItAs + " FROM " + originalTableWhoseQueryYouWantToAddTo;
+
+  const endOfMainQuery = " WHERE review.product_id=" + productId;
+
+  const fullQuery = beginningOfMainQuery + aggQuery + endOfMainQuery;
 
   pool.query(fullQuery, (error, result) => {
     if (error) {
@@ -92,19 +100,20 @@ const maxProductId = async function() {
 }
 
 const maxId = async function(tableName, callback) {
-  const selectionQuery = "SELECT MAX(id) FROM " + tableName;
+  const column = tableName === 'review' ? 'review_id' : 'id';
+  const selectionQuery = "SELECT MAX(" + column + ") FROM " + tableName;
 
   pool.query(selectionQuery, (error, result) => {
     if (error) {
       console.log(error);
       callback(error, result);
     } else {
-      callback(null, result.rows[0]);
+      callback(null, result.rows[0].max);
     }
   })
 }
 
-const recommendedColumns = '(product_id, recommended, not recommended)';
+const recommendedColumns = '(product_id, recommended, notrecommended)';
 
 const populateRecommendations = async function(data, productId) {
   let recommendedCount = 0;
