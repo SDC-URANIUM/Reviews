@@ -86,7 +86,16 @@ const ratingsByProductId = async function(productId, callback) {
 
   pool.query(selectionQuery, (error, result) => {
     if (error) console.log(error);
-    else callback(result.rows);
+    else callback(result.rows[0]);
+  })
+}
+
+const recommendationsByProductId = async function(productId, callback) {
+  const selectionQuery = "SELECT * FROM recommendations WHERE product_id='" + productId + "'";
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) console.log(error);
+    else callback(result.rows[0]);
   })
 }
 
@@ -146,6 +155,8 @@ const seedRecommendations = async function() {
 
 module.exports = {
   reviewsByProductId,
+  ratingsByProductId,
+  recommendationsByProductId,
   maxId,
 }
 

@@ -5,7 +5,7 @@ const select = require('./select.js');
 
 
 const ratings = async function (rating, product_id) {
-  const columnToUpdate = get.columnFromRating(rating);
+  const columnToUpdate = rating;
   // console.log("🚀 ~ file: update.js ~ line 9 ~ ratings ~ columnToUpdate", columnToUpdate)
 
   const updateQuery = "UPDATE ratings SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
@@ -82,7 +82,7 @@ const reported = async function(review_id, callback) {
 }
 
 const recommendations = async function (recommended, product_id) {
-  const columnToUpdate = recommended ? 'recommended' : 'notrecommended';
+  const columnToUpdate = recommended ? '1' : '0';
   const updateQuery = "UPDATE recommendations SET " + columnToUpdate + " = " + columnToUpdate + " + 1 WHERE product_id='" + product_id + "'";
 
   pool.query(updateQuery, (error, result) => {

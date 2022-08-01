@@ -39,6 +39,20 @@ app.get('/reviews', (req, res) => {
 
 app.get('/reviews/meta', (req, res) => {
   console.log('entering meta endpoint');
+
+  const product_id = req.query.product_id;
+  const response = {};
+
+  response.product_id = product_id;
+
+  select.ratingsByProductId(product_id, (error, ratings) => {
+    response.ratings = ratings;
+
+    select.recommendationsByProductId(product_id, (error, recommendations) => {
+      response.recommended = recommendations;
+    });
+  });
+
 });
 
 app.post('/reviews', (req, res) => {
