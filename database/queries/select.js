@@ -91,6 +91,19 @@ const maxProductId = async function() {
   })
 }
 
+const maxId = async function(tableName, callback) {
+  const selectionQuery = "SELECT MAX(id) FROM " + tableName;
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    } else {
+      callback(null, result.rows[0]);
+    }
+  })
+}
+
 const recommendedColumns = '(product_id, recommended, not recommended)';
 
 const populateRecommendations = async function(data, productId) {
@@ -107,23 +120,24 @@ const populateRecommendations = async function(data, productId) {
     }
   }
 
-  console.log('recommended count is ' + recommendedCount);
-  console.log('not recommended count is ' + notRecommendedCount);
+  // console.log('recommended count is ' + recommendedCount);
+  // console.log('not recommended count is ' + notRecommendedCount);
 
   const recommendedValues = get.values([productId, recommendedCount, notRecommendedCount]);
-  console.log('rating values are ' + recommendedValues);
+  // console.log('recommended values are ' + recommendedValues);
 
   insertInto.recommendations(recommendedColumns, recommendedValues);
 }
 
-const seedRatings = async function() {
-  for (let currentId = 11; currentId <= 1000011; currentId++) {
+const seedRecommendations = async function() {
+  for (let currentId = 2; currentId <= 1000011; currentId++) {
     productIds(currentId);
   }
 }
 
 module.exports = {
-  reviewsByProductId
+  reviewsByProductId,
+  maxId,
 }
 
 // photosByProductId(5);
@@ -132,7 +146,7 @@ module.exports = {
 // reviewsByProductId(4, callback);
 // productIds(1);
 
-// allRatings();
+// seedRecommendations();
 // productIds(1);
 // productIds(2);
 // productIds(3);

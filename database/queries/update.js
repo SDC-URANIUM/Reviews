@@ -1,5 +1,7 @@
 const pool = require('../db.js');
 const get = require('../helpers/get.js');
+const insertInto = require('./insertInto.js');
+const select = require('./select.js');
 
 
 const ratings = async function (rating, product_id) {
@@ -9,6 +11,76 @@ const ratings = async function (rating, product_id) {
   pool.query(updateQuery, (error, result) => {
     if (error) console.log(error);
   });
+}
+
+const photos = async function(urls, review_id) {
+  const columns = '(id, review_id, url)';
+  select.maxId('photos', (error, max) => {
+    if (!error) {
+      let newId = max + 1;
+
+      for (const url of urls) {
+        let values = get.values([newId, review_id, url]);
+        insertInto.photos(columns, values);
+        newId++;
+      }
+    }
+  })
+}
+
+const reviews = async function(dataValues, urls, callback) {
+  const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
+
+  select.maxId('review', (error, max) => {
+    const newId = max + 1;
+    dataValues[0] = newId;
+
+    const values = get.values(dataValues);
+
+    photos(urls, newId);
+
+    insertInto.review(columns, values, (error, result) => {
+      if (error) {
+        console.log(error);
+        callback(error, result);
+      }
+      else callback(null, result);
+    });
+  });
+}
+
+const helpfulness = async function(review_id, callback) {
+  const updateQuery = 'UPDATE review SET helpfulness = helpfulness + 1 WHERE review_id=' + review_id;
+
+  pool.query(updateQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    } else {
+      callback(null, result);
+    }
+  })
+}
+
+const reported = async function(review_id, callback) {
+  const updateQuery = 'UPDATE review SET reported = true WHERE id=' + review_id;
+
+  pool.query(updateQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    } else {
+      callback(null, result);
+    }
+  })
+}
+
+module.exports = {
+  helpfulness,
+  reported,
+  reviews,
+  photos,
+  ratings
 }
 
 

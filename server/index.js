@@ -42,22 +42,34 @@ app.post('/reviews', (req, res) => {
   console.log('entering post reviews endpoint');
 
   const data = req.body;
-  const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
-  const values = get.values([19999999, data.product_id, data.rating, new Date(), data.summary, data.body, data.recommend, false, data.name, data.email, null, 0]);
+  const values = [null, data.product_id, data.rating, new Date(), data.summary, data.body, data.recommend, false, data.name, data.email, null, 0];
 
   update.ratings(data.rating, data.product_id);
-  insertInto.review(columns, values, (error, result) => {
+  update.reviews(values, data.photos, (error, result) => {
     if (error) res.sendStatus(500);
     else res.status(201).send(result);
-  });
+  })
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
   console.log('entering helpful endpoint');
+  const review_id = req.query.review_id;
+
+  update.helpfulness(review_id, (error, result) => {
+    if (error) res.sendStatus(500);
+    else res.status(200).send(result);
+  })
 });
 
 app.put('/reviews/:review_id/report', (req, res) => {
   console.log('entering report endpoint');
+
+  const review_id = req.query.review_id;
+
+  update.reported(review_id, (error, result) => {
+    if (error) res.sendStatus(500);
+    else res.status(200).send(result);
+  })
 });
 
 const PORT = 3000;

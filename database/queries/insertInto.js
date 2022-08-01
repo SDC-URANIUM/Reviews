@@ -1,6 +1,6 @@
 const pool = require('../db.js');
 
-const example = async function(columns, values) {
+const example = async function (columns, values) {
   const insertionQuery = "INSERT INTO example \
     " + columns + " VALUES " + values;
 
@@ -10,7 +10,7 @@ const example = async function(columns, values) {
   })
 }
 
-const reviewsInfo = async function(columns, values) {
+const reviewsInfo = async function (columns, values) {
   const insertionQuery = "INSERT INTO reviewsinfo \
     " + columns + " VALUES " + values;
 
@@ -20,7 +20,7 @@ const reviewsInfo = async function(columns, values) {
   })
 }
 
-const meta = async function(columns, values) {
+const meta = async function (columns, values) {
   const insertionQuery = "INSERT INTO meta \
     " + columns + " VALUES " + values;
 
@@ -30,7 +30,7 @@ const meta = async function(columns, values) {
   })
 }
 
-const review = async function(columns, values, callback) {
+const review = async function (columns, values, callback) {
   const insertionQuery = "INSERT INTO review \
     " + columns + " VALUES " + values;
 
@@ -46,7 +46,7 @@ const review = async function(columns, values, callback) {
   })
 }
 
-const photos = async function(columns, values) {
+const photos = async function (columns, values) {
   const insertionQuery = "INSERT INTO photos \
     " + columns + " VALUES " + values;
 
@@ -56,7 +56,7 @@ const photos = async function(columns, values) {
   })
 }
 
-const ratings = async function(columns, values) {
+const ratings = async function (columns, values) {
   const insertionQuery = "INSERT INTO ratings \
     " + columns + " VALUES " + values;
 
@@ -65,17 +65,15 @@ const ratings = async function(columns, values) {
   })
 }
 
-const recommendations = async function(columns, values) {
-  const insertionQuery = "INSERT INTO recommendations \
-    " + columns + " VALUES " + values;
+const recommendations = async function (columns, values) {
+  const insertionQuery = "INSERT INTO recommendations VALUES " + values;
 
   pool.query(insertionQuery, (error, result) => {
     if (error) console.log(error);
-    else console.log(result);
   })
 }
 
-const characteristics = async function(columns, values) {
+const characteristics = async function (columns, values) {
   const insertionQuery = "INSERT INTO characteristics \
     " + columns + " VALUES " + values;
 
