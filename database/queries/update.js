@@ -33,18 +33,18 @@ const photos = async function(urls, review_id) {
 }
 
 const reviews = async function(dataValues, urls, characteristics, callback) {
-  console.log('getting into update reviews');
+  // console.log('getting into update reviews');
   const columns = '(review_id, product_id, rating, date, summary, body, recommend, reported, reviewer_name, reviewer_email, response, helpfulness)';
 
   select.maxId('review', (error, max) => {
     if (error) console.log('error in getting max id from review', error);
     else {
-      console.log('max is', max);
+      // console.log('max is', max);
       const newId = max + 1;
       dataValues[0] = newId;
 
       const values = get.values(dataValues);
-      console.log("🚀 ~ file: update.js ~ line 45 ~ select.maxId ~ values", values)
+      // console.log("🚀 ~ file: update.js ~ line 45 ~ select.maxId ~ values", values)
 
       photos(urls, newId);
       characteristicReviews(characteristics, dataValues[1], newId);

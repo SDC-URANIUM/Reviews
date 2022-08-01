@@ -42,10 +42,10 @@ app.get('/reviews/meta', (req, res) => {
 });
 
 app.post('/reviews', (req, res) => {
-  console.log('entering post reviews endpoint');
+  // console.log('entering post reviews endpoint');
 
-  const data = req.query;
-  console.log(JSON.stringify(data));
+  const data = req.body;
+  // console.log(JSON.stringify(data));
   const date = new Date();
   const time = date.getTime();
 
@@ -53,10 +53,10 @@ app.post('/reviews', (req, res) => {
 
   update.recommendations(data.recommend, data.product_id);
   update.ratings(data.rating, data.product_id);
-  update.reviews(values, [], {}, (error, result) => {
+  update.reviews(values, data.photos, data.characteristics, (error, result) => {
     if (error) res.sendStatus(500);
     else res.status(201).send(result);
-  })
+  });
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
