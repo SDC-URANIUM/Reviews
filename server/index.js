@@ -11,12 +11,15 @@ const app = express();
 app.use(express.json());
 
 app.get('/reviews', (req, res) => {
-  console.log('entering reviews endpoint');
+  // console.log('entering reviews endpoint');
 
   const productId = req.query.product_id;
   // console.log(req.query);
   const page = req.query.page;
-  const count = req.query.count;
+  const count = req.query.count || 5;
+
+  const startIndex = page * count;
+  const endIndex = startIndex + count;
 
   const response = {};
 
@@ -28,7 +31,7 @@ app.get('/reviews', (req, res) => {
     if (error) {
       res.sendStatus(404);
     } else {
-      response.results = reviews;
+      response.results = reviews.slice(startIndex, endIndex);
       res.status(200).send(response);
     }
   });
@@ -52,7 +55,7 @@ app.post('/reviews', (req, res) => {
 });
 
 app.put('/reviews/:review_id/helpful', (req, res) => {
-  console.log('entering helpful endpoint');
+  // console.log('entering helpful endpoint');
   const review_id = req.query.review_id;
 
   update.helpfulness(review_id, (error, result) => {
@@ -62,7 +65,7 @@ app.put('/reviews/:review_id/helpful', (req, res) => {
 });
 
 app.put('/reviews/:review_id/report', (req, res) => {
-  console.log('entering report endpoint');
+  // console.log('entering report endpoint');
 
   const review_id = req.query.review_id;
 
