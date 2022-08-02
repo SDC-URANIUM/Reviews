@@ -46,11 +46,58 @@ app.get('/reviews/meta', (req, res) => {
   response.product_id = product_id;
 
   select.ratingsByProductId(product_id, (error, ratings) => {
-    response.ratings = ratings;
+    if (error) {
+      console.log(error);
+      res.sendStatus(500);
+    } else {
+      response.ratings = ratings;
 
-    select.recommendationsByProductId(product_id, (error, recommendations) => {
-      response.recommended = recommendations;
-    });
+      select.recommendationsByProductId(product_id, (error, recommendations) => {
+        if (error) {
+          console.log(error);
+          res.sendStatus(500);
+        } else {
+          response.recommended = recommendations;
+
+          select.characteristicsByProductId(product_id, async function(error, characteristics) {
+            if (error) {
+              console.log(error);
+              res.sendStatus(500);
+            } else {
+              const characteristicsObject = {};
+
+              for (let currentIndex = 0; currentIndex < characteristics.length; currentIndex++) {
+                let currentCharacteristic = characteristics[currentIndex];
+                // console.log("🚀 ~ file: index.js ~ line 71 ~ select.characteristicsByProductId ~ currentCharacteristic", currentCharacteristic)
+
+                await select.characteristicReviewsByCharacteristicId(currentCharacteristic.id, product_id, (error, characteristic) => {
+                  // console.log("🚀 ~ file: index.js ~ line 76 ~ awaitselect.characteristicReviewsByCharacteristicId ~ characteristic", characteristic)
+                  const characteristicInfo = {};
+                  characteristicInfo.id = characteristic[0].characteristics_id;
+
+                  let totalValue = 0;
+                  for (let currentIndex = 0; currentIndex < characteristic.length; currentIndex++) {
+                    totalValue += characteristic[currentIndex].value;
+                  }
+
+                  let averageValue = totalValue / characteristic.length;
+
+                  characteristicInfo.value = averageValue;
+                  characteristicsObject[currentCharacteristic.name] = characteristicInfo;
+
+
+                  if (currentIndex === characteristics.length - 1) {
+                    response.characteristics = characteristicsObject;
+                    res.status(200).send(response);
+                  }
+                });
+              }
+            }
+
+          })
+        }
+      });
+    }
   });
 
 });

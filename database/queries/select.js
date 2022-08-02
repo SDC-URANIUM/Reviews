@@ -82,20 +82,26 @@ const allRatings = async function() {
 }
 
 const ratingsByProductId = async function(productId, callback) {
-  const selectionQuery = "SELECT * FROM ratings WHERE product_id='" + productId + "'";
+  const selectionQuery = "SELECT \"1\", \"2\", \"3\", \"4\", \"5\" FROM ratings WHERE product_id='" + productId + "'";
 
   pool.query(selectionQuery, (error, result) => {
-    if (error) console.log(error);
-    else callback(result.rows[0]);
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    }
+    else callback(null, result.rows[0]);
   })
 }
 
 const recommendationsByProductId = async function(productId, callback) {
-  const selectionQuery = "SELECT * FROM recommendations WHERE product_id='" + productId + "'";
+  const selectionQuery = "SELECT \"0\", \"1\" FROM recommendations WHERE product_id='" + productId + "'";
 
   pool.query(selectionQuery, (error, result) => {
-    if (error) console.log(error);
-    else callback(result.rows[0]);
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    }
+    else callback(null, result.rows[0]);
   })
 }
 
@@ -147,6 +153,30 @@ const populateRecommendations = async function(data, productId) {
   insertInto.recommendations(recommendedColumns, recommendedValues);
 }
 
+const characteristicReviewsByCharacteristicId = function(characteristicId, product_id, callback) {
+  const selectionQuery = "SELECT characteristics_id, value FROM characteristicreviews WHERE characteristics_id='" + characteristicId + "'";
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    }
+    else callback(null, result.rows);
+  })
+}
+
+const characteristicsByProductId = function(productId, callback) {
+  const selectionQuery = "SELECT * FROM characteristics WHERE product_id='" + productId + "'";
+
+  pool.query(selectionQuery, (error, result) => {
+    if (error) {
+      console.log(error);
+      callback(error, result);
+    }
+    else callback(null, result.rows);
+  })
+}
+
 const seedRecommendations = async function() {
   for (let currentId = 2; currentId <= 1000011; currentId++) {
     productIds(currentId);
@@ -158,6 +188,8 @@ module.exports = {
   ratingsByProductId,
   recommendationsByProductId,
   maxId,
+  characteristicReviewsByCharacteristicId,
+  characteristicsByProductId,
 }
 
 // photosByProductId(5);
