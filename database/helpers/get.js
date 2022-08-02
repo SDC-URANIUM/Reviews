@@ -46,8 +46,21 @@ const columnFromRating = function(rating) {
   }
 }
 
+const averageValue = function(arrayOfObjects) {
+  let totalValue = 0;
+
+
+  for (let currentIndex = 0; currentIndex < arrayOfObjects.length; currentIndex++) {
+    const currentValue = arrayOfObjects[currentIndex].value;
+    totalValue += currentValue;
+  }
+
+  return totalValue / arrayOfObjects.length;
+}
+
 module.exports = {
   columns,
   values,
-  columnFromRating
+  columnFromRating,
+  averageValue
 }

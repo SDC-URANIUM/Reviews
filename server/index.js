@@ -27,18 +27,18 @@ app.get('/reviews', (req, res) => {
   response.page = page;
   response.count = count;
 
-  select.reviewsByProductId(productId, (error, reviews) => {
+  select.reviewsByProductId(productId, startIndex, count, (error, reviews) => {
     if (error) {
       res.sendStatus(404);
     } else {
-      response.results = reviews.slice(startIndex, endIndex);
+      response.results = reviews;
       res.status(200).send(response);
     }
   });
 });
 
 app.get('/reviews/meta', (req, res) => {
-  console.log('entering meta endpoint');
+  // console.log('entering meta endpoint');
 
   const product_id = req.query.product_id;
   const response = {};
@@ -64,45 +64,24 @@ app.get('/reviews/meta', (req, res) => {
               console.log(error);
               res.sendStatus(500);
             } else {
-              const characteristicsObject = {};
+              const characteristicsTransformed = [];
 
               for (let currentIndex = 0; currentIndex < characteristics.length; currentIndex++) {
                 let currentCharacteristic = characteristics[currentIndex];
-                // console.log("🚀 ~ file: index.js ~ line 71 ~ select.characteristicsByProductId ~ currentCharacteristic", currentCharacteristic)
+                let averageValue = get.averageValue(currentCharacteristic.value);
 
-                await select.characteristicReviewsByCharacteristicId(currentCharacteristic.id, product_id, (error, characteristic) => {
-                  // console.log("🚀 ~ file: index.js ~ line 76 ~ awaitselect.characteristicReviewsByCharacteristicId ~ characteristic", characteristic)
-                  const characteristicInfo = {};
-                  characteristicInfo.id = currentCharacteristic.id;
-
-                  if (characteristic) {
-
-                    let totalValue = 0;
-                    for (let currentIndex = 0; currentIndex < characteristic.length; currentIndex++) {
-                      totalValue += characteristic[currentIndex].value;
-                    }
-
-                    let averageValue = totalValue / characteristic.length;
-
-                    characteristicInfo.value = "" + averageValue;
-                  }
-                  characteristicsObject[currentCharacteristic.name] = characteristicInfo;
-
-
-                  if (currentIndex === characteristics.length - 1) {
-                    response.characteristics = characteristicsObject;
-                    res.status(200).send(response);
-                  }
-                });
+                currentCharacteristic.value = averageValue;
+                characteristicsTransformed.push(currentCharacteristic);
               }
-            }
 
-          })
+              response.characteristics = characteristicsTransformed;
+              res.status(200).send(response);
+            }
+          });
         }
       });
     }
   });
-
 });
 
 app.post('/reviews', (req, res) => {

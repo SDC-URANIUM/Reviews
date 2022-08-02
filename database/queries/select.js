@@ -37,7 +37,7 @@ const photosByProductId = async function(review_id) {
   })
 }
 
-const reviewsByProductId = async function(productId, callback) {
+const reviewsByProductId = async function(productId, offset, limit, callback) {
   const beginningOfMainQuery = "SELECT review.review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness, ";
 
   const aliasForFormatToUse = "photoResults";
@@ -48,7 +48,7 @@ const reviewsByProductId = async function(productId, callback) {
 
   const aggQuery = "(SELECT " + formatYouWant + " FROM (" + queryToDataYouWant + ") as " + aliasForFormatToUse + ") as " + columnYouWantItAs + " FROM " + originalTableWhoseQueryYouWantToAddTo;
 
-  const endOfMainQuery = " WHERE review.product_id=" + productId;
+  const endOfMainQuery = " WHERE review.product_id=" + productId + " LIMIT " + limit + " OFFSET " + offset;
 
   const fullQuery = beginningOfMainQuery + aggQuery + endOfMainQuery;
 
@@ -166,15 +166,29 @@ const characteristicReviewsByCharacteristicId = function(characteristicId, produ
 }
 
 const characteristicsByProductId = function(productId, callback) {
-  const selectionQuery = "SELECT * FROM characteristics WHERE product_id='" + productId + "'";
+  const beginningOfMainQuery = "SELECT characteristics.id, name, ";
 
-  pool.query(selectionQuery, (error, result) => {
+  const aliasForFormatToUse = "characteristicreviewsresult";
+  const formatYouWant = "json_agg(row_to_json(" + aliasForFormatToUse + "))";
+  const queryToDataYouWant = "SELECT value FROM characteristicreviews WHERE characteristics.id = characteristicreviews.characteristics_id";
+  const columnYouWantItAs = "value";
+  const originalTableWhoseQueryYouWantToAddTo = "characteristics";
+
+  const aggQuery = "(SELECT " + formatYouWant + " FROM (" + queryToDataYouWant + ") as " + aliasForFormatToUse + ") as " + columnYouWantItAs + " FROM " + originalTableWhoseQueryYouWantToAddTo;
+
+  const endOfMainQuery = " WHERE characteristics.product_id=" + productId;
+
+  const fullQuery = beginningOfMainQuery + aggQuery + endOfMainQuery;
+
+  pool.query(fullQuery, (error, result) => {
     if (error) {
       console.log(error);
-      callback(error, result);
+      callback(error, null);
     }
-    else callback(null, result.rows);
-  })
+    else {
+      callback(null, result.rows)
+    };
+  });
 }
 
 const seedRecommendations = async function() {
