@@ -84,7 +84,7 @@ app.get('/reviews/meta', (req, res) => {
 
                     let averageValue = totalValue / characteristic.length;
 
-                    characteristicInfo.value = averageValue;
+                    characteristicInfo.value = "" + averageValue;
                   }
                   characteristicsObject[currentCharacteristic.name] = characteristicInfo;
 
