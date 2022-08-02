@@ -59,7 +59,7 @@ app.get('/reviews/meta', (req, res) => {
         } else {
           response.recommended = recommendations;
 
-          select.characteristicsByProductId(product_id, async function(error, characteristics) {
+          select.characteristicsByProductId(product_id, async function (error, characteristics) {
             if (error) {
               console.log(error);
               res.sendStatus(500);
@@ -73,16 +73,19 @@ app.get('/reviews/meta', (req, res) => {
                 await select.characteristicReviewsByCharacteristicId(currentCharacteristic.id, product_id, (error, characteristic) => {
                   // console.log("🚀 ~ file: index.js ~ line 76 ~ awaitselect.characteristicReviewsByCharacteristicId ~ characteristic", characteristic)
                   const characteristicInfo = {};
-                  characteristicInfo.id = characteristic[0].characteristics_id;
+                  characteristicInfo.id = currentCharacteristic.id;
 
-                  let totalValue = 0;
-                  for (let currentIndex = 0; currentIndex < characteristic.length; currentIndex++) {
-                    totalValue += characteristic[currentIndex].value;
+                  if (characteristic) {
+
+                    let totalValue = 0;
+                    for (let currentIndex = 0; currentIndex < characteristic.length; currentIndex++) {
+                      totalValue += characteristic[currentIndex].value;
+                    }
+
+                    let averageValue = totalValue / characteristic.length;
+
+                    characteristicInfo.value = averageValue;
                   }
-
-                  let averageValue = totalValue / characteristic.length;
-
-                  characteristicInfo.value = averageValue;
                   characteristicsObject[currentCharacteristic.name] = characteristicInfo;
 
 
