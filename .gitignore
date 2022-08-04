@@ -3,3 +3,4 @@ package-lock.json
 sdc_database.pem
 sdc.pgsql
 .DS_Store
+sdc_server.pem
