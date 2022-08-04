@@ -1,3 +1,5 @@
 node_modules
 package-lock.json
-sdc-uranium.pem
+sdc_database.pem
+sdc.pgsql
+.DS_Store
