@@ -4,3 +4,5 @@ sdc_database.pem
 sdc.pgsql
 .DS_Store
 sdc_server.pem
+proxy.pem
+backup_server.pem

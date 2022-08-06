@@ -47,6 +47,7 @@ const columnFromRating = function(rating) {
 }
 
 const averageValue = function(arrayOfObjects) {
+  arrayOfObjects = arrayOfObjects || [];
   let totalValue = 0;
 
 
